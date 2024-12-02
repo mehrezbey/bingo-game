@@ -20,10 +20,10 @@ public class BingoServiceImpl extends UnicastRemoteObject implements BingoServic
         for (int i = 0; i < 10; i++) {
             numbers[i] = i;
         }
-        List<Integer> numbersList = Arrays.asList(numbers);
+        List<Integer> numbersList = new ArrayList<>(Arrays.asList(numbers));
         Collections.shuffle(numbersList);
+        System.out.println(numbersList);
         return numbersList;
-
     }
 
     @Override
@@ -42,7 +42,7 @@ public class BingoServiceImpl extends UnicastRemoteObject implements BingoServic
 
         Integer ballNumber = appearanceOrderAllClients.get(username).get(0);
         appearanceOrderAllClients.get(username).remove(0);
-        return (ballNumber ==  value)?1:0;
+        return (ballNumber.equals(value))?1:0;
     }
 
     @Override
@@ -51,12 +51,17 @@ public class BingoServiceImpl extends UnicastRemoteObject implements BingoServic
     }
 
     @Override
-    public List<Map.Entry<String, Integer>> topThreeScores() throws RemoteException {
+    public String topThreeScores() throws RemoteException {
 
-        return scores.entrySet()
+        List<Map.Entry<String, Integer>> l =  scores.entrySet()
                 .stream()
                 .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                 .limit(3)
                 .toList();
+        String s ="";
+        for (Map.Entry<String, Integer> entry : l) {
+            s+= entry.getKey() + ": " + entry.getValue() +"\n";
+        }
+        return s;
     }
 }
