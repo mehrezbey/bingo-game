@@ -22,7 +22,6 @@ public class BingoServiceImpl extends UnicastRemoteObject implements BingoServic
         }
         List<Integer> numbersList = new ArrayList<>(Arrays.asList(numbers));
         Collections.shuffle(numbersList);
-        System.out.println(numbersList);
         return numbersList;
     }
 
